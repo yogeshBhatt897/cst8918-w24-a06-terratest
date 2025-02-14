@@ -37,13 +37,13 @@ func TestAzureLinuxVMCreation(t *testing.T) {
 	nicName := terraform.Output(t, terraformOptions, "nic_name")
 	publicIP := terraform.Output(t, terraformOptions, "public_ip")
 
-	// ✅ Wait for VM resources to stabilize
+	// Wait for VM resources to stabilize
 	time.Sleep(10 * time.Second)
 
-	// ✅ Test 1: Confirm VM exists
+	// Test1: Confirm VM exists
 	assert.True(t, azure.VirtualMachineExists(t, subscriptionID, resourceGroupName, vmName), "VM does not exist")
 
-	// ✅ Test 2: Validate the VM is Running Ubuntu
+	// Test: Validate the VM is Running Ubuntu
 	vm := azure.GetVirtualMachine(t, subscriptionID, resourceGroupName, vmName)
 	require.NotNil(t, vm, "Failed to fetch VM details")
 
@@ -51,13 +51,13 @@ func TestAzureLinuxVMCreation(t *testing.T) {
 	assert.Equal(t, "Canonical", *osProfile.Publisher, "OS Publisher mismatch")
 	assert.Equal(t, "UbuntuServer", *osProfile.Offer, "OS Offer mismatch")
 
-	// ✅ Test 3: Check if NIC is Connected to VM
-	// ✅ Test 3: Check if NIC is Connected to VM
+	// Test3: Check if NIC is Connected to VM
+	// Test3: Check if NIC is Connected to VM
 nic, err := azure.GetNetworkInterfaceE(subscriptionID, resourceGroupName, nicName)
 require.NoError(t, err, "Failed to fetch NIC details")
 require.NotNil(t, nic.VirtualMachine, "NIC is not attached to a VM")
 
 
-	// ✅ Test 4: Validate Public IP Address is Assigned
+	// Test: Validate Public IP Address is Assigned
 	require.NotEmpty(t, publicIP, "Public IP is not assigned")
 }
